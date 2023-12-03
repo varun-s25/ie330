@@ -58,7 +58,7 @@ u_chart_revised <- ggplot(data_frame_revised, aes(x = Week, y = Errors)) +
   geom_hline(yintercept = c(center_revised, ucl_revised, lcl_revised), linetype = c('solid', 'dashed', 'dashed'), color = c('red', 'green', 'green')) +
   geom_hline(yintercept = c(ucl_revised, lcl_revised), linetype = 'dashed', color = 'green') +
   labs(title = 'U Chart Revised', x = 'Week', y = 'No. of Spelling Errors',
-       caption = paste("avg =", round(center, 5), "\n", "UCL =", round(ucl_revised, 5), "LCL =", round(lcl_revised, 5)))
+       caption = paste("avg =", round(center_revised, 5), "\n", "UCL =", round(ucl_revised, 5), "LCL =", round(lcl_revised, 5)))
 
 print(u_chart_revised)
 
