@@ -10,7 +10,7 @@ x <- c(16.8, 14.9, 18.3, 16.5, 17.1, 17.4, 15.9, 14.4, 15.0, 15.7,
 data_frame <- data.frame(Wafer = wafer, x = x)
 
 # Calculate moving ranges
-moving_ranges <- c(NA, diff(data_frame$x))
+moving_ranges <- abs(c(NA, diff(data_frame$x)))
 
 # Calculate averages and standard deviation
 avg <- mean(data_frame$x)
@@ -20,7 +20,6 @@ avgmr <- mean(abs(moving_ranges[2:length(moving_ranges)]), na.rm = TRUE)
 stddevmr <- sd(abs(moving_ranges[2:length(moving_ranges)]), na.rm = TRUE)
 
 # Calculate UCL and LCL
-A2 <- 2.704
 d2 <- 1.128
 
 ucl <- avg + 3 * (avgmr/d2)
