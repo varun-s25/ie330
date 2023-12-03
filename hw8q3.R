@@ -1,4 +1,4 @@
-library(qcc)
+library(ggplot2)
 
 # Data
 wafer <- 1:30
@@ -12,15 +12,41 @@ data_frame <- data.frame(Wafer = wafer, x = x)
 # Calculate moving ranges
 moving_ranges <- c(NA, diff(data_frame$x))
 
+# Calculate averages and standard deviation
+avg <- mean(data_frame$x)
+std_dev <- sd(data_frame$x)
+
+avgmr <- mean(moving_ranges, na.rm = TRUE)
+stddevmr <- sd(moving_ranges, na.rm = TRUE)
+
+cat("")
+
+# Calculate UCL and LCL
+ucl <- avg + 3 * std_dev
+lcl <- avg - 3* std_dev
+
+uclmr <- avgmr + 3 * stddevmr
+lclmr <- avgmr - 3 * stddevmr
+
 # Create individuals control chart
-ind_chart <- qcc(data_frame$x, type = "xbar.one", plot = TRUE, title = "Individuals Chart")
+ind_chart <- ggplot(data_frame, aes(x = Wafer, y = x)) +
+  geom_line() + 
+  geom_point() + 
+  geom_hline(yintercept = c(ucl, lcl), linetype = "dashed", color = "red") + 
+  labs(title = "Individuals Control Chart",
+       x = "Wafer",
+       y = "x")
+
+print(ind_chart)
 
 # Create moving range control chart
-mr_chart <- qcc(moving_ranges, type = "R", plot = TRUE, title = "Moving Range Chart")
+mr_chart <- ggplot(data_frame, aes(x = Wafer, y = moving_ranges)) + 
+  geom_line() + 
+  geom_point() + 
+  geom_hline(yintercept = c(uclmr, lclmr), linetype = "dashed", color = "red") + 
+  labs(title = "Moving Range Control Chart",
+       x = "Wafer",
+       y = "Moving Range") + 
+  theme_minimal()
 
-# Estimate process mean and standard deviation
-process_mean <- mean(data_frame$x)
-#process_sd <- sd(data_frame$x)
-
-cat("Process Mean:", process_mean, "\n")
-#cat("Process Standard Deviation:", process_sd, "\n")
+print(mr_chart)
