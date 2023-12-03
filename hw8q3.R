@@ -19,9 +19,6 @@ std_dev <- sd(data_frame$x)
 avgmr <- mean(abs(moving_ranges[2:length(moving_ranges)]), na.rm = TRUE)
 stddevmr <- sd(abs(moving_ranges[2:length(moving_ranges)]), na.rm = TRUE)
 
-cat("MR-bar (Average Moving Range):", avgmr, "\n")
-
-
 # Calculate UCL and LCL
 ucl <- avg + 3 * std_dev
 lcl <- avg - 3* std_dev
@@ -55,3 +52,8 @@ mr_chart <- ggplot(data_frame, aes(x = Wafer, y = moving_ranges)) +
        caption = paste("Average MR =", round(avgmr, 2), "\n", "Std Dev =", round(stddevmr, 2), "\n", "UCL =", round(uclmr, 2), "LCL =", round(lclmr, 2)))
 
 print(mr_chart)
+
+
+
+cat("Process Mean:", avg, "\n")
+cat("Process Standard Deviation:", std_dev)
