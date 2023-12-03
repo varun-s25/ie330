@@ -16,17 +16,21 @@ moving_ranges <- c(NA, diff(data_frame$x))
 avg <- mean(data_frame$x)
 std_dev <- sd(data_frame$x)
 
-avgmr <- mean(moving_ranges, na.rm = TRUE)
-stddevmr <- sd(moving_ranges, na.rm = TRUE)
+avgmr <- mean(abs(moving_ranges[2:length(moving_ranges)]), na.rm = TRUE)
+stddevmr <- sd(abs(moving_ranges[2:length(moving_ranges)]), na.rm = TRUE)
 
-cat("")
+cat("MR-bar (Average Moving Range):", avgmr, "\n")
+
 
 # Calculate UCL and LCL
 ucl <- avg + 3 * std_dev
 lcl <- avg - 3* std_dev
 
-uclmr <- avgmr + 3 * stddevmr
-lclmr <- avgmr - 3 * stddevmr
+d3 <- 0
+d4 <- 3.27
+
+uclmr <- d4 * avgmr
+lclmr <- d3 * avgmr
 
 # Create individuals control chart
 ind_chart <- ggplot(data_frame, aes(x = Wafer, y = x)) +
@@ -35,7 +39,8 @@ ind_chart <- ggplot(data_frame, aes(x = Wafer, y = x)) +
   geom_hline(yintercept = c(ucl, lcl), linetype = "dashed", color = "red") + 
   labs(title = "Individuals Control Chart",
        x = "Wafer",
-       y = "x")
+       y = "x",
+       caption = paste("Average X =", round(avg, 2), "\n", "Std Dev =", round(std_dev, 2), "\n", "UCL =", round(ucl, 2), "LCL =", round(lcl, 2)))
 
 print(ind_chart)
 
@@ -46,7 +51,7 @@ mr_chart <- ggplot(data_frame, aes(x = Wafer, y = moving_ranges)) +
   geom_hline(yintercept = c(uclmr, lclmr), linetype = "dashed", color = "red") + 
   labs(title = "Moving Range Control Chart",
        x = "Wafer",
-       y = "Moving Range") + 
-  theme_minimal()
+       y = "Moving Range",
+       caption = paste("Average MR =", round(avgmr, 2), "\n", "Std Dev =", round(stddevmr, 2), "\n", "UCL =", round(uclmr, 2), "LCL =", round(lclmr, 2)))
 
 print(mr_chart)
