@@ -20,8 +20,11 @@ avgmr <- mean(abs(moving_ranges[2:length(moving_ranges)]), na.rm = TRUE)
 stddevmr <- sd(abs(moving_ranges[2:length(moving_ranges)]), na.rm = TRUE)
 
 # Calculate UCL and LCL
-ucl <- avg + 3 * std_dev
-lcl <- avg - 3* std_dev
+A2 <- 2.704
+d2 <- 1.128
+
+ucl <- avg + 3 * (avgmr/d2)
+lcl <- avg - 3 * (avgmr/d2)
 
 d3 <- 0
 d4 <- 3.27
